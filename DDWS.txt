@@ -1,0 +1,158 @@
+﻿DDWS
+JOB 02:
+
+
+apt update && apt -y upgrade
+apt install apache2 mariadb-server mariadb-client php libapache2-mod-php php-cli php-mysql php-zip php-curl php-xml wget -y
+ 
+http://192.168.253.136/
+
+
+
+
+JOB 03
+
+
+Les serveurs web peuvent utilisé le protocole de transfert hypertexte HTTP pour fournir du contenu Web sur le World Wide Web de l’Internet ou d’un ordinateur.  
+
+
+Renseignez-vous sur les différents serveurs Web existants et produisez une
+documentation qui contiendra votre recherche ainsi que les avantages et inconvénients
+de chacun des serveurs.
+
+
+ Le serveur Apache: 
+
+
+*  Logiciel open source
+* Prend en charge une vaste gamme de technologies web gratuit comme PHP, Perl, Python, Rub …
+* Disponible sur les principaux systèmes d’exploitation et plateformes matérielles comme Microsoft Window, Linux, BSD …
+
+
+Le serveur Internet Information Services ( IIS):
+
+
+* serveur primaire ( serveur DNS qui définit une zone)
+* utilisé dans les déploiements des technologies Microsoft telles que “ asp.net”  
+* soutiens diverses technologies Web offerte par des tiers.
+* Fonctionne seulement sur les systèmes d’exploitation Microsoft
+* logiciel propriétaire, nécessite une licence
+
+
+Le serveur Web Apache Tomcat:
+
+
+* souvent utilisé avec Apache pour exécuter les servlets Java et le code JSP
+* peut être exécuté avec d’autres serveurs web ou comme serveur web ( quand le seul contenu est basé sur les servlets Java et/ou JSP. 
+* Développe des logiciels open source gratuit pour la plateforme Java de Sun
+* Prend en charge la plupart des systèmes d’exploitation pris en charge par le serveur web Apache
+
+
+Le Serveur Sun Java System Web Server:
+
+
+*  Propriétaire libre mais closed-source
+* Développé par Sun Microsystems
+* Prend en charge les technologies web non - Java comme PHP, Perl, Python, Ruby, ASP et les technologies web Java tel que les servlets Java et JSP
+* Compatible avec Windows, Unix et Linux
+
+
+Il existe bien sûr d’autres serveurs, ceux noté ci-dessus font partie des plus connus.
+
+
+
+
+JOB 04: mettre en place un serveur DNS:
+
+
+
+
+1. Installer les paquets:
+su 
+apt -y install bind9 bind9utils dnsutils
+
+
+2. Editer les fichiers de configuration:
+
+
+bash: ifconfig : commande introuvable :
+* su
+* sudo apt update
+* sudo nano ~/.bashrc, taper en bas du nano cette commande : export PATH=/usr/sbin:$PATH
+nano /etc/resolv.conf : search dsnproject.prepa.com ; nameserver 192.168.100.1
+cd /etc/bind
+ls
+nano named.conf.local :
+ zone "dnsproject.prepa.com" IN {
+        type master;
+        file"/etc/bind/direct";
+};
+zone "100.168.192.in-addr.arpa" IN {
+        type master;
+        file"/etc/bind/inverse";
+};
+cp db.local direct
+nano direct : TTL    604800
+@       IN      SOA     dnsproject.prepa.com debian.dnsproject.prepa.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      debian.dnsproject.prepa.com.
+debian  IN      A       192.168.100.1
+www     IN      CNAME   debian.dnsproject.prepa.com.
+
+
+cp direct inverse
+nano inverse : 1       IN      PTR     debian.dnsproject.prepa.com.
+chmod 744 inverse
+cd
+nano /etc/resolv.conf : search dnsproject.prepa.com
+nameserver 192.168.100.1
+ sudo ifconfig ens33 192.168.100.1
+systemctl restart bind9
+systemctl status bind9
+nslookup www
+
+
+
+
+
+
+JOB 05: 
+
+
+Faites des recherches sur comment obtient-on un nom de domaine public ?
+
+
+Paramétrer un sous-domaine sur son DNS permet donc de rendre accessible celui-ci auprès des internautes.
+
+
+
+
+Quelles sont les spécificités que l’on peut avoir sur certaines extensions de nom de domaine ?
+
+
+L’extension d’un nom de domaine correspond au suffixe situé à droite du nom de domaine après le point. Chaque nom de domaine est unique et se termine par une extension bien précise, choisie en fonction des ambitions de l’entreprise et de sa zone de diffusion. 
+
+
+Il en existe différents types : 
+* Les extensions génériques: elles sont indépendantes de tous pays. Elles sont libres et sans aucune restriction. Exemple: .com, .org, .info et .net.
+* Les extensions géographiques : elles sont liées à un pays ou à une zone géographique.  Elles font l’objet de restrictions qui rendent leurs utilisations impossibles par des non-résidents.Elles permettent d’identifier la provenance ou la zone desservie par le site internet. Exemple: .eu ( Union européenne); .fr ( France); .ca ( Canada); …
+* Les extensions de nom d’entreprises : elles sont réservées aux grandes multinationales ou aux sociétés d’envergure internationale. Exemple: microsoft, apple, …
+* Les nouvelles générations d’extensions génériques : Elles conviennent mieux aux réalités spécifiques et permettent d’éviter que votre site internet soit détourné ou associé à un site indésirable. elles existent par centaine sur internet. Exemple: immo, café, etc …
+
+
+À une échelle internationale, vous pouvez déposer plusieurs extensions.
+ Certaines extensions sont déconseillées, par exemple : .top, .cf, .gq, .tk, .ga, .ml. car ils sont utilisés par les spammeurs.
+
+
+
+
+
+
+
+
+JOB 06:
