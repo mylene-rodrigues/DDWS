@@ -150,9 +150,28 @@ Il en existe différents types :
 
 
 
-
-
-
-
-
 JOB 06:
+Mettre la VM en Bridge avant de la lancer
+Puis passer sur le domaine local, acceder au fichier host et rajouter à l’intérieur l’IP de la VM et le nom local dns project.prepa.com.
+
+Enregistrer et tester l’IP et le nom local sur Internet pour pouvoir se connecter à la page apache. 
+
+
+JOB 07:
+
+Installation du serveur DHCP: sudo apt-get install server-dhcp3
+Commande: 
+ nano/etc/network/interfaces→iface eth0 inet dhcp
+nano/etc.dhcp3/dhcpd.conf→“dnsproject.prepa.com” → modifié : Subnet →Netmask→Range
+Enregistrer et fermer le nano
+/etc/init.d/dhcp3-server start
+redémarrer l’interface réseau /etc/init.d/networking restart
+
+
+
+JOB08:
+
+
+Acceder au fichier nano/etc/.dhcp3/dhcpd.conf
+Rentrer la commande “options routeurs" et rentrer notre passerelle
+Enlever le wi-fi sur la VM
